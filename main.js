@@ -37,7 +37,7 @@ function usernamePopup() {
 
 const questionPopup = () => {
   prompts.question(
-    `\n*****Select the device you'd like to add to your shopping cart: *****\n****type *checkout* to checkout, *delete item* to delete item from cart****\nitem ${itemCount}: `,
+    `\n*****Select the device you'd like to add to your shopping cart: *****\n****type *checkout* to checkout, *delete <item name>* to delete item from cart****\nitem ${itemCount}: `,
     (selectedItem) => {
       if (selectedItem.toLowerCase() === "checkout") {
         checkout();
