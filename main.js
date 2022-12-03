@@ -44,13 +44,19 @@ const questionPopup = () => {
         return;
       }
       if (selectedItem.toLowerCase().includes("delete")) {
-        deletedItemFromCart();
+        deleteItemFromCart(selectedItem);
         viewCart();
         questionPopup();
         return;
       }
-      if (!itemExists(selectedItem)) {
+      if (!itemExistInCatalog(selectedItem)) {
         print(selectedItem + " is not in stock");
+        questionPopup();
+        return;
+      }
+
+      if (itemExistInCart(selectedItem)) {
+        print(selectedItem + " already added to cart");
         questionPopup();
         return;
       }
@@ -83,10 +89,26 @@ const checkoutQuestionPopup = () => {
   );
 };
 
-const itemExists = (str) => {
+const itemExistInCatalog = (str) => {
   let exist = false;
   for (let i = 0; i < catalog.length; i++) {
     const item = catalog[i];
+    if (item.product.toLowerCase() === str.toLowerCase()) {
+      exist = true;
+      break;
+    } else {
+      continue;
+    }
+  }
+
+  return exist;
+};
+
+const itemExistInCart = (str) => {
+  let exist = false;
+
+  for (let i = 0; i < cart.length; i++) {
+    const item = cart[i];
     if (item.product.toLowerCase() === str.toLowerCase()) {
       exist = true;
       break;
@@ -147,6 +169,46 @@ const viewCart = () => {
   }
 };
 
+const deleteItemFromCart = (str) => {
+  if (!str) {
+    print(`Item does not exist in cart\n`);
+    questionPopup();
+    return;
+  }
+
+  let itemIndex = 0;
+  let itemExist = false;
+
+  let strArr = str.split(" ");
+  let action = strArr[0].toLowerCase();
+  strArr.shift();
+  let product = strArr.join(" ").toLowerCase();
+
+  if (action === "delete") {
+    for (let i = 0; i < cart.length; i++) {
+      const item = cart[i];
+
+      if (item.product.toLowerCase() === product) {
+        itemExist = true;
+        itemIndex = i;
+        break;
+      } else {
+        itemExist = false;
+      }
+    }
+  }
+
+  if (itemExist) {
+    cart.splice(itemIndex, 1);
+    print(`\n*item deleted from cart successfully*\n`);
+    itemCount--;
+    return;
+  }
+
+  print(`Error deleting item\n`);
+  questionPopup();
+};
+
 const checkout = () => {
   if (cart.length === 0) {
     print(
@@ -159,10 +221,6 @@ const checkout = () => {
   viewCart();
   printInvoice();
   process.exit();
-};
-
-const deletedItemFromCart = () => {
-  print(`item deleted from cart successfully\n`);
 };
 
 const increment = () => {
