@@ -6,10 +6,6 @@ This is an E-commerce app that runs only on terminal. A user can add items to ca
 
 ![Desktop Screenshot](./assets/screenshot.png)
 
-### Link to online demo
-
-- [E-commerce Console App](https://react-invoice-app-proj.netlify.app/)
-
 ### Adding And Deleting Item from Cart
 
 Adding Item to Cart:
